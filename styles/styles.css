@@ -1,4 +1,4 @@
-body{
+body {
   background-color: #E5E5E5;
 }
 
@@ -94,13 +94,13 @@ header ion-icon {
   background-color: #FFFFFF;
 }
 
-.conteiner-mensagem .usuario{
+.conteiner-mensagem .usuario {
   display: inline-block;
   font-size: 14px;
   font-weight: 700;
 }
 
-.conteiner-mensagem .hora{
+.conteiner-mensagem .hora {
   color: #AAAAAA;
 }
 
@@ -108,7 +108,7 @@ header ion-icon {
   background-color: #DCDCDC;
 }
 
-.mensagem{
+.mensagem {
   margin: 10px 0;
   line-height: 20px;
 }
