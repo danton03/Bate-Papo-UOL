@@ -74,10 +74,26 @@ header ion-icon {
   line-height: 21px;
 }
 
+.enviar-mensagem{
+  display: flex;
+  align-items: center;
+}
+
 .enviar-mensagem ion-icon {
   width: 26px;
   height: 26px;
 }
+
+.enviar-mensagem:hover{
+  cursor: pointer;
+}
+
+.enviar-mensagem >ion-icon:active{
+  cursor: pointer;
+  color: #a7a7a7;
+  transition: color linear 0.7s;
+}
+
 
 /*                     Estilização dos balões do chat                 */
 .conteiner-mensagem {

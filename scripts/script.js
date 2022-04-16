@@ -1,8 +1,9 @@
-/*                          Entrando na sala do chat                      */
+//Variáveis globais
 let statusCode = 0;
 let usuarioConectado = '';
 let carregamento = 1;
 
+/*                          Entrando na sala do chat                      */
 function entrarNaSala() {
   //Pergunta o nome do usuário 
   const nome = prompt(`Bem-vindo ao Bate-papo UOL!\nQual o seu nome?`);
@@ -33,7 +34,7 @@ function conexaoAceita(resposta) {
   function manterOnline() {
     axios.post("https://mock-api.driven.com.br/api/v6/uol/status", { name: usuarioConectado });
   }
-  setInterval(manterOnline, 4000);
+  setInterval(manterOnline, 4500);
 
 }
 
@@ -46,7 +47,9 @@ function falhaNaConexao() {
 
 /*                    Listando as mensagens do servidor                   */
 function carregarMensagens() {
-  axios.get("https://mock-api.driven.com.br/api/v6/uol/messages").then(listarMensagens);
+  axios.get("https://mock-api.driven.com.br/api/v6/uol/messages")
+  .then(listarMensagens);
+
   function listarMensagens(lista) {
     //selecionando a div que mostrará todas as mensagens
     let conversa = document.querySelector(".mensagens");
@@ -77,7 +80,7 @@ function carregarMensagens() {
       }
 
       //Mensagens de texto
-      else if("message" in mensagem){
+      else if(mensagem.type === 'message'){
         conversa.innerHTML+=`
         <li class="conteiner-mensagem">
           <div class="mensagem">
@@ -90,7 +93,7 @@ function carregarMensagens() {
       }
 
       //Mensagens privadas
-      else if("private_message" in mensagem){
+      else if(mensagem.type === 'private_message'){
         conversa.innerHTML+=`
         <li class="conteiner-mensagem">
           <div class="mensagem private">
@@ -102,26 +105,49 @@ function carregarMensagens() {
         </li>`
       }
     }
-    console.log(mensagens);
+
     // Obtém o último <li> pertencente a estrutura <ul> obtida
-    console.log(conversa);
     const ultimaMensagem = conversa.lastChild;
     ultimaMensagem.scrollIntoView();
-    console.log(ultimaMensagem);
+
+    //Atualiza as mensagens a cada 3s
+    setTimeout(carregarMensagens,3000);
 
     //Se estiver no primeiro carregamento da página, pergunta o nome do usuário
     if (carregamento === 1) {
-      setTimeout(entrarNaSala, 1000); 
+      setTimeout(entrarNaSala, 500); 
       carregamento++;
     } 
   }
 }
 
-/* function enviarMensagem() {
+/*                  Enviando as mensagens para o servidor                 */
+function enviarMensagem() {
+  //Recebendo o texto do input
+  const mensagem = document.querySelector(".texto-mensagem").value;
+  //Requisitando o envio da mensagem para o servidor
+  axios.post("https://mock-api.driven.com.br/api/v6/uol/messages",({
+    from: usuarioConectado,
+    to: "Todos",
+    text: mensagem,
+    type: "message"
+  }))
+  .then(enviar) //caso dê certo
+  .catch(erroDeEnvio) //caso de erro
+
+  //Se enviar a mensagem com sucesso, atualiza as mensagens na aplicação
+  function enviar() {
+    //Limpa o input para possibilitar o envio de novas mensagens
+    document.querySelector(".texto-mensagem").value = '';
+    carregarMensagens();
+  }
   
-} */
+  //Se falhar ao enviar a mensagem, atualiza a página para logar novamente
+  function erroDeEnvio() {
+    window.location.reload();
+  }
 
+}
+
+//Inicia a aplicação carregando as mensagens
 carregarMensagens();
-
-//Atualiza as mensagens a cada 3s
-/* setInterval(Mensagens,3000); */
