@@ -33,9 +33,11 @@ function conexaoAceita(resposta) {
   /* Atualizando o status de conectado do usuário a cada 4s */
   function manterOnline() {
     axios.post("https://mock-api.driven.com.br/api/v6/uol/status", { name: usuarioConectado });
+    
+    //Atualiza as mensagens a cada 3s
+    setTimeout(carregarMensagens,3000);
   }
   setInterval(manterOnline, 4500);
-
 }
 
 function falhaNaConexao() {
@@ -109,9 +111,6 @@ function carregarMensagens() {
     // Obtém o último <li> pertencente a estrutura <ul> obtida
     const ultimaMensagem = conversa.lastChild;
     ultimaMensagem.scrollIntoView();
-
-    //Atualiza as mensagens a cada 3s
-    setTimeout(carregarMensagens,3000);
 
     //Se estiver no primeiro carregamento da página, pergunta o nome do usuário
     if (carregamento === 1) {
