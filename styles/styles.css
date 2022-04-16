@@ -1,3 +1,4 @@
+/*                   Estilização dos elementos da Página                 */
 body {
   background-color: #E5E5E5;
 }
@@ -50,8 +51,7 @@ header ion-icon {
 
 .mensagens {
   width: 100%;
-  height: 100vh;
-  /* Remover depois */
+  height: auto;
   display: flex;
   flex-direction: column;
 
@@ -67,6 +67,7 @@ header ion-icon {
   height: 60%;
   border: none;
   outline: none;
+  display: flex;
 
   font-weight: 400;
   font-size: 18px;
@@ -78,10 +79,10 @@ header ion-icon {
   height: 26px;
 }
 
-/* Estilização dos balões do chat */
+/*                     Estilização dos balões do chat                 */
 .conteiner-mensagem {
   width: 100%;
-  height: auto;
+  height: fit-content;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -90,6 +91,7 @@ header ion-icon {
   padding: 0 8px;
   box-sizing: border-box;
   border-radius: 2px;
+  word-break: break-word;
 
   background-color: #FFFFFF;
 }
@@ -108,12 +110,18 @@ header ion-icon {
   background-color: #DCDCDC;
 }
 
+.private {
+  background-color: #FFDEDE;
+}
+
 .mensagem {
   margin: 10px 0;
+  width: 100%;
+  height: fit-content;
   line-height: 20px;
 }
 
-/* Responsividade */
+/*                            Responsividade                         */
 @media(max-width: 767px) {
   .page {
     width: 100%;
