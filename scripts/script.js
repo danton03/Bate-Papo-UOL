@@ -33,9 +33,6 @@ function conexaoAceita(resposta) {
   /* Atualizando o status de conectado do usuário a cada 4s */
   function manterOnline() {
     axios.post("https://mock-api.driven.com.br/api/v6/uol/status", { name: usuarioConectado });
-    
-    //Atualiza as mensagens a cada 3s
-    setTimeout(carregarMensagens,3000);
   }
   setInterval(manterOnline, 4500);
 }
@@ -56,18 +53,9 @@ function carregarMensagens() {
     //selecionando a div que mostrará todas as mensagens
     let conversa = document.querySelector(".mensagens");
     const listaDeMensagens = lista.data;
-    const mensagens = listaDeMensagens.filter(filtraMensagens);
-    mensagens.map(mostrarMensagens);
-
-    //Filtra as mensagens privadas que não são para o usuário que está logado
-    function filtraMensagens(mensagem) {
-      if (mensagem.type === "private_message" && mensagem.from !== usuarioConectado) {
-        return false;
-      }
-      return true;
-    }
+    conversa.innerHTML = '';
+    listaDeMensagens.map(mostrarMensagens);
     
-    //Mostrando as mensagens na tela
     function mostrarMensagens(mensagem) {
       //Mensagens de status
       if (mensagem.type === 'status') {
@@ -95,7 +83,7 @@ function carregarMensagens() {
       }
 
       //Mensagens privadas
-      else if(mensagem.type === 'private_message'){
+      else if(mensagem.type === "private_message" && mensagem.from === usuarioConectado){
         conversa.innerHTML+=`
         <li class="conteiner-mensagem">
           <div class="mensagem private">
@@ -107,17 +95,22 @@ function carregarMensagens() {
         </li>`
       }
     }
-
     // Obtém o último <li> pertencente a estrutura <ul> obtida
     const ultimaMensagem = conversa.lastChild;
     ultimaMensagem.scrollIntoView();
+  }
+}
 
+function gerenciador() {
     //Se estiver no primeiro carregamento da página, pergunta o nome do usuário
     if (carregamento === 1) {
-      setTimeout(entrarNaSala, 500); 
       carregamento++;
-    } 
-  }
+      carregarMensagens();
+      setTimeout(entrarNaSala, 1000); 
+    }
+    else{
+      carregarMensagens();
+    }
 }
 
 /*                  Enviando as mensagens para o servidor                 */
@@ -149,4 +142,5 @@ function enviarMensagem() {
 }
 
 //Inicia a aplicação carregando as mensagens
-carregarMensagens();
+gerenciador();
+setInterval(carregarMensagens,3000);
